@@ -12,6 +12,7 @@ class LoginScreenState extends State<LoginScreen> {
     height: 0.0,
     width: 0.0,
   );
+
   Color blueGrey = Colors.blueGrey[300];
   Color cyan300 = Colors.cyan[300];
   Color white70 = Colors.white70;
@@ -52,8 +53,8 @@ class LoginScreenState extends State<LoginScreen> {
           ),
         backgroundColor: bgWhite,
         elevation: 0.0,
-
       ) : null,
+
       body: new Container(
         padding: const EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
         child: new Column(
@@ -84,6 +85,7 @@ class LoginScreenState extends State<LoginScreen> {
               margin: const EdgeInsets.only(top: 35.0),
               child: new TextFormField(
                 decoration: new InputDecoration.collapsed(hintText: "password"),
+                obscureText: true,
               ),
             ),
 
@@ -92,6 +94,7 @@ class LoginScreenState extends State<LoginScreen> {
               margin: const EdgeInsets.only(top: 35.0),
               child: new TextFormField(
                 decoration: new InputDecoration.collapsed(hintText: "confirm password"),
+                obscureText: true,
               ),
             )
             : emptyContainer,
@@ -149,7 +152,7 @@ class LoginScreenState extends State<LoginScreen> {
             !_signingUp ? new Container(
               margin: const EdgeInsets.fromLTRB(0.0,40.0,15.0, 0.0),
               width: 250.0,
-              height: 25.0,
+              height: 40.0,
               child: new FlatButton(
                 onPressed: () {
                   setState(() {
