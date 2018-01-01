@@ -12,14 +12,31 @@ class LoginScreenState extends State<LoginScreen> {
   /////////////////////////////////////////////////////////////////////////////
   bool _signingUp = false;
   bool _loggingIn = false;
+  String _username;
+  String _email;
+  String _password;
+  final formKey = new GlobalKey<FormState>();
   final TextEditingController _usernameTextController = new TextEditingController();
   final TextEditingController _passwordTextController = new TextEditingController();
   final TextEditingController _emailTextController = new TextEditingController();
 
   /////////////////////////////////////////////////////////////////////////////
+  // BACKEND METHODS
+  /////////////////////////////////////////////////////////////////////////////
+  void _login() {
+    final form = formKey.currentState;
+    form.validate() ? form.save() : debugPrint("form failed to validate");
+  }
+
+  void _signup() {
+    final form = formKey.currentState;
+    form.validate() ? form.save() : debugPrint("form failed to validate");
+  }
+
+  /////////////////////////////////////////////////////////////////////////////
   //  UI ASSETS
   /////////////////////////////////////////////////////////////////////////////
-  static const SML = 45.0;
+  static const double SML = 45.0;
   Widget emptyContainer = new Container(
     height: 0.0,
     width: 0.0,
@@ -79,6 +96,8 @@ class LoginScreenState extends State<LoginScreen> {
             ),
           ),
           controller: _usernameTextController,
+          validator: (val) => val.isEmpty ? "Username can't be empty" : null,
+          onSaved: (val) => _username = val,
         ),
       );
     } else return emptyContainer;
@@ -97,6 +116,8 @@ class LoginScreenState extends State<LoginScreen> {
             ),
           ),
           controller: _passwordTextController,
+          validator: (val) => val.isEmpty ? "password cannot be empty" : null,
+          onSaved: (val) => _password = val,
           obscureText: true,
         ),
       );
@@ -116,12 +137,27 @@ class LoginScreenState extends State<LoginScreen> {
 
           ),
           controller: _emailTextController,
+          validator: (val) => val.contains(
+              new RegExp("^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$"))
+              ? null : "email must follow *@*.* convention",
+          onSaved: (val) => _email = val,
         ),
       );
     } else {
       return emptyContainer;
     }
   }
+
+  Widget userForm()=> new Form(
+      key: formKey,
+      child: new Column(
+        children: <Widget>[
+          usernameTextFormField(),
+          emailTextFormField(),
+          passwordTextFormField(),
+        ],
+      ),
+    );
 
   Widget loginFlatButton() => new Container(
       margin: _loggingIn || _signingUp ? const EdgeInsets.fromLTRB(SML, 25.0, 0.0, 0.0) : const EdgeInsets.fromLTRB(SML, 75.0, 0.0, 0.0),
@@ -131,9 +167,11 @@ class LoginScreenState extends State<LoginScreen> {
         onPressed: () {
           setState(() {
             if (_signingUp) {
-              debugPrint("Signing up!");
+              debugPrint("signup pressed");
+              _signup();
             } else if (_loggingIn) {
-              debugPrint(_usernameTextController.text);
+              debugPrint("login pressed");
+              _login();
             } else {
               _loggingIn = true;
             }
@@ -230,9 +268,7 @@ class LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             lisztBanner(),
             lisztSlogan(),
-            usernameTextFormField(),
-            emailTextFormField(),
-            passwordTextFormField(),
+            userForm(),
             loginFlatButton(),
             signUpFlatButton(),
           ],
