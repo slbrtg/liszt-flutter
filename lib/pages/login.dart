@@ -7,25 +7,38 @@ class LoginScreen extends StatefulWidget {
 }
 
 class LoginScreenState extends State<LoginScreen> {
+  /////////////////////////////////////////////////////////////////////////////
+  // BACKEND PROPERTIES
+  /////////////////////////////////////////////////////////////////////////////
   bool _signingUp = false;
   bool _loggingIn = false;
+  final TextEditingController _usernameTextController = new TextEditingController();
+  final TextEditingController _passwordTextController = new TextEditingController();
+  final TextEditingController _emailTextController = new TextEditingController();
+
+  /////////////////////////////////////////////////////////////////////////////
+  //  UI ASSETS
+  /////////////////////////////////////////////////////////////////////////////
+  static const SML = 45.0;
   Widget emptyContainer = new Container(
     height: 0.0,
     width: 0.0,
   );
-
   dynamic lisztBannerTopMargin() {
     if (_signingUp) {
-      return const EdgeInsets.only(top: 0.0);
+      return const EdgeInsets.fromLTRB(SML, 0.0, 0.0, 0.0);
     } else if (_loggingIn) {
-      return const EdgeInsets.only(top: 35.0);
-    } else return const EdgeInsets.only(top: 115.0);
+      return const EdgeInsets.fromLTRB(SML, 35.0, 0.0, 0.0);
+    } else return const EdgeInsets.fromLTRB(SML, 115.0, 0.0, 0.0);
   }
-
   Color blueGrey = Colors.blueGrey[300];
   Color cyan300 = Colors.cyan[300];
   Color white70 = Colors.white70;
   Color bgWhite = Colors.white12;
+
+  /////////////////////////////////////////////////////////////////////////////
+  // UI WIDGETS
+  /////////////////////////////////////////////////////////////////////////////
 
   Widget lisztBanner() => new Container(
       margin: lisztBannerTopMargin(),
@@ -41,7 +54,7 @@ class LoginScreenState extends State<LoginScreen> {
     );
 
   Widget lisztSlogan() => new Container(
-      margin: const EdgeInsets.only(top: 10.0),
+      margin: const EdgeInsets.fromLTRB(SML, 10.0, 0.0, 0.0),
       child: new RichText(
         text: new TextSpan(
             text: "get your life together",
@@ -59,7 +72,13 @@ class LoginScreenState extends State<LoginScreen> {
       return new Container(
         margin: const EdgeInsets.only(top: 30.0),
         child: new TextFormField(
-          decoration: new InputDecoration.collapsed(hintText: "username"),
+          decoration: new InputDecoration(
+            hintText: "username",
+            icon: new Container(
+              child: new Icon(Icons.person),
+            ),
+          ),
+          controller: _usernameTextController,
         ),
       );
     } else return emptyContainer;
@@ -68,22 +87,35 @@ class LoginScreenState extends State<LoginScreen> {
   Widget passwordTextFormField() {
     if(_loggingIn || _signingUp) {
       return new Container(
-        margin: const EdgeInsets.only(top: 30.0),
+        margin: const EdgeInsets.fromLTRB(0.0,30.0,0.0,0.0),
         child: new TextFormField(
-          decoration: new InputDecoration.collapsed(hintText: "password"),
+          decoration: new InputDecoration(
+            hintText: "password",
+            icon: new Container(
+              margin: const EdgeInsets.only(left: 0.0),
+              child: new Icon(Icons.vpn_key),
+            ),
+          ),
+          controller: _passwordTextController,
           obscureText: true,
         ),
       );
     } else return emptyContainer;
   }
 
-  Widget confirmPasswordTextFormField() {
+  Widget emailTextFormField() {
     if(_signingUp) {
       return new Container(
         margin: const EdgeInsets.only(top: 30.0),
         child: new TextFormField(
-          decoration: new InputDecoration.collapsed(hintText: "confirm password"),
-          obscureText: true,
+          decoration: new InputDecoration(
+            hintText: "email",
+            icon: new Container(
+              child: new Icon(Icons.alternate_email),
+            ),
+
+          ),
+          controller: _emailTextController,
         ),
       );
     } else {
@@ -92,14 +124,19 @@ class LoginScreenState extends State<LoginScreen> {
   }
 
   Widget loginFlatButton() => new Container(
-      margin: _loggingIn || _signingUp ? const EdgeInsets.only(
-          top: 25.0) : const EdgeInsets.only(top: 75.0),
+      margin: _loggingIn || _signingUp ? const EdgeInsets.fromLTRB(SML, 25.0, 0.0, 0.0) : const EdgeInsets.fromLTRB(SML, 75.0, 0.0, 0.0),
       width: 250.0,
       height: 40.0,
       child: new FlatButton(
         onPressed: () {
           setState(() {
-            _loggingIn = true;
+            if (_signingUp) {
+              debugPrint("Signing up!");
+            } else if (_loggingIn) {
+              debugPrint(_usernameTextController.text);
+            } else {
+              _loggingIn = true;
+            }
           });
         },
         child: new RichText(
@@ -119,13 +156,14 @@ class LoginScreenState extends State<LoginScreen> {
   Widget signUpFlatButton() {
     if (!_signingUp && !_loggingIn) {
       return new Container(
-        margin: const EdgeInsets.fromLTRB(0.0, 35.0, 15.0, 0.0),
+        margin: const EdgeInsets.fromLTRB(SML, 35.0, 0.0, 0.0),
         width: 250.0,
         height: 40.0,
         child: new FlatButton(
           onPressed: () {
             setState(() {
               _signingUp = true;
+              debugPrint(_loggingIn.toString());
             });
           },
           child: new RichText(
@@ -143,9 +181,9 @@ class LoginScreenState extends State<LoginScreen> {
     } else return emptyContainer;
   }
 
-
-
-
+  /////////////////////////////////////////////////////////////////////////////
+  // UI BUILD
+  /////////////////////////////////////////////////////////////////////////////
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -185,7 +223,7 @@ class LoginScreenState extends State<LoginScreen> {
       ) : null,
 
       body: new Container(
-        padding: const EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
+        padding: const EdgeInsets.fromLTRB(20.0, 0.0, 50.0, 0.0),
         child: new Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
@@ -193,8 +231,8 @@ class LoginScreenState extends State<LoginScreen> {
             lisztBanner(),
             lisztSlogan(),
             usernameTextFormField(),
+            emailTextFormField(),
             passwordTextFormField(),
-            confirmPasswordTextFormField(),
             loginFlatButton(),
             signUpFlatButton(),
           ],
