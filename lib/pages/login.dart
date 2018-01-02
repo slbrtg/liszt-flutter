@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/authentication.dart';
+import '../models/user.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -10,11 +12,10 @@ class LoginScreenState extends State<LoginScreen> {
   /////////////////////////////////////////////////////////////////////////////
   // BACKEND PROPERTIES
   /////////////////////////////////////////////////////////////////////////////
+  User user = new User();
+  UserAuth userAuth = new UserAuth();
   bool _signingUp = false;
   bool _loggingIn = false;
-  String _username;
-  String _email;
-  String _password;
   final formKey = new GlobalKey<FormState>();
   final TextEditingController _usernameTextController = new TextEditingController();
   final TextEditingController _passwordTextController = new TextEditingController();
@@ -25,14 +26,20 @@ class LoginScreenState extends State<LoginScreen> {
   /////////////////////////////////////////////////////////////////////////////
   void _login() {
     final form = formKey.currentState;
-    form.validate() ? form.save() : debugPrint("form failed to validate");
+    if (form.validate()){
+      form.save();
+      userAuth.loginUser(user);
+    }
   }
 
   void _signup() {
     final form = formKey.currentState;
-    form.validate() ? form.save() : debugPrint("form failed to validate");
+    if (form.validate()){
+      form.save();
+      userAuth.signupUser(user);
+    }
   }
-
+  
   /////////////////////////////////////////////////////////////////////////////
   //  UI ASSETS
   /////////////////////////////////////////////////////////////////////////////
@@ -96,8 +103,8 @@ class LoginScreenState extends State<LoginScreen> {
             ),
           ),
           controller: _usernameTextController,
-          validator: (val) => val.isEmpty ? "Username can't be empty" : null,
-          onSaved: (val) => _username = val,
+          validator: (String val) => val.isEmpty ? "Username cannot be empty" : null,
+          onSaved: (String val) => user.username = val,
         ),
       );
     } else return emptyContainer;
@@ -116,8 +123,8 @@ class LoginScreenState extends State<LoginScreen> {
             ),
           ),
           controller: _passwordTextController,
-          validator: (val) => val.isEmpty ? "password cannot be empty" : null,
-          onSaved: (val) => _password = val,
+          validator: (String val) => val.isEmpty ? "password cannot be empty" : null,
+          onSaved: (String val) => user.password = val,
           obscureText: true,
         ),
       );
@@ -137,10 +144,10 @@ class LoginScreenState extends State<LoginScreen> {
 
           ),
           controller: _emailTextController,
-          validator: (val) => val.contains(
+          validator: (String val) => val.contains(
               new RegExp("^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$"))
-              ? null : "email must follow *@*.* convention",
-          onSaved: (val) => _email = val,
+              ? null : "email is not valid",
+          onSaved: (String val) => user.email = val,
         ),
       );
     } else {

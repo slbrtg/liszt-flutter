@@ -1,4 +1,4 @@
-package com.yourcompany.liszt;
+package com.doghat.liszt;
 
 import android.os.Bundle;
 
