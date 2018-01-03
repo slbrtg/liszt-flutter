@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../services/authentication.dart';
 import '../models/user.dart';
 
@@ -28,7 +29,13 @@ class LoginScreenState extends State<LoginScreen> {
     final form = formKey.currentState;
     if (form.validate()){
       form.save();
-      userAuth.loginUser(user);
+      userAuth.loginUser(user).then((onValue) {
+        if (onValue == "user logged in")
+          debugPrint("user logged in!");
+        // Navigator.pushNamed(context, "/HomePage");
+      }).catchError((PlatformException onError) {
+        debugPrint(onError.message);
+      });
     }
   }
 
@@ -36,7 +43,13 @@ class LoginScreenState extends State<LoginScreen> {
     final form = formKey.currentState;
     if (form.validate()){
       form.save();
-      userAuth.signupUser(user);
+      userAuth.signupUser(user).then((onValue) {
+        if (onValue == "user created")
+          debugPrint("user created!");
+          // Navigator.pushNamed(context, "/HomePage");
+      }).catchError((PlatformException onError) {
+        debugPrint(onError.message);
+      });
     }
   }
   
