@@ -31,7 +31,7 @@ class LoginScreenState extends State<LoginScreen> {
       userAuth.loginUser(user).then((onValue) {
         if (onValue == "user logged in")
           debugPrint("user logged in!");
-        // Navigator.pushNamed(context, "/HomePage");
+        Navigator.pushNamed(context, "/home");
       }).catchError((PlatformException onError) {
         debugPrint(onError.message);
       });
@@ -153,7 +153,7 @@ class LoginScreenState extends State<LoginScreen> {
     return new Scaffold(
       appBar: new AppBar(
         backgroundColor: cyan300,
-        elevation: 2.5,
+        title: new Text("login"),
       ),
       body: new Container(
         padding: const EdgeInsets.fromLTRB(20.0, 0.0, 50.0, 0.0),
