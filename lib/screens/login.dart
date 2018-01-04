@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../services/authentication.dart';
+import '../services/firebaseAuth.dart';
 import '../assets/palette.dart';
 import '../models/user.dart';
 
@@ -50,7 +50,7 @@ class LoginScreenState extends State<LoginScreen> {
           text: "Liszt",
           style: new TextStyle(
             fontSize: 65.0,
-            color: blueGrey,
+            color: blueGrey300,
           )
       ),
     ),
@@ -64,7 +64,7 @@ class LoginScreenState extends State<LoginScreen> {
           style: new TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: 27.0,
-            color: blueGrey,
+            color: blueGrey300,
           )
       ),
     ),
@@ -152,7 +152,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: cyan300,
+        backgroundColor: blueGrey900,
         title: new Text("login"),
       ),
       body: new Container(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../assets/palette.dart';
+import 'package:liszt/services/firebaseAuth.dart';
+
 
 
 
@@ -9,10 +11,27 @@ class WelcomeScreen extends StatefulWidget {
 }
 
 class WelcomeScreenState extends State<WelcomeScreen> {
+
+ /////////////////////////////////////////////////////////////////////////////
+// BACKEND PROPERTIES
+/////////////////////////////////////////////////////////////////////////////
+  UserAuth userAuth = new UserAuth();
+/////////////////////////////////////////////////////////////////////////////
+// BACKEND METHODS
+/////////////////////////////////////////////////////////////////////////////
+  void navHomeIfLoggedIn() {
+    userAuth.getCurrentUser().then((onVal){
+      if (onVal == null){
+        debugPrint(onVal.toString());
+      } else {
+        debugPrint(onVal.toString());
+        Navigator.pushNamed(context, "/home");
+      }
+    });
+  }
 /////////////////////////////////////////////////////////////////////////////
 // UI WIDGETS
 /////////////////////////////////////////////////////////////////////////////
-
   Widget lisztBanner() => new Container(
     margin: const EdgeInsets.fromLTRB(45.0, 130.0, 0.0, 0.0),
     child: new RichText(
@@ -20,7 +39,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           text: "Liszt",
           style: new TextStyle(
             fontSize: 65.0,
-            color: blueGrey,
+            color: blueGrey300,
           )
       ),
     ),
@@ -34,7 +53,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           style: new TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: 27.0,
-            color: blueGrey,
+            color: blueGrey300,
           )
       ),
     ),
@@ -48,6 +67,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
       onPressed: () {
         debugPrint("login pressed");
         Navigator.pushNamed(context, "/login");
+
       },
       child: new RichText(
         text: new TextSpan(
@@ -78,7 +98,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               text: "sign up",
               style: new TextStyle(
                 fontSize: 22.0,
-                color: blueGrey,
+                color: blueGrey300,
               )
           ),
         ),
@@ -88,8 +108,15 @@ class WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   /////////////////////////////////////////////////////////////////////////////
-  // UI BUILD
+  // UI LIFECYCLE AND BUILD
   /////////////////////////////////////////////////////////////////////////////
+
+  @override
+  void initState() {
+    super.initState();
+    navHomeIfLoggedIn();
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(

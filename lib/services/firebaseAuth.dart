@@ -24,13 +24,9 @@ class UserAuth {
     return "user logged in";
   }
 
-  bool isLoggedIn() {
+  Future<FirebaseUser> getCurrentUser() async {
     firebaseAuth = FirebaseAuth.instance;
-    if (firebaseAuth.currentUser() == null){
-      return false;
-    } else {
-      print(firebaseAuth.currentUser());
-      return true;
-    }
+    FirebaseUser user = await firebaseAuth.currentUser();
+    return user;
   }
 }
