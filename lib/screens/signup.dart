@@ -29,10 +29,10 @@ class SignupScreenState extends State<SignupScreen> {
     final form = formKey.currentState;
     if (form.validate()){
       form.save();
-      userAuth.signupUser(user).then((onValue) {
-        if (onValue == "user created")
-          debugPrint("user created!");
-        // Navigator.pushNamed(context, "/HomePage");
+      userAuth.signUp(user).then((onValue) {
+        if (onValue != null)
+          debugPrint(onValue.toString());
+          Navigator.pushNamed(context, "/home");
       }).catchError((PlatformException onError) {
         debugPrint(onError.message);
       });
@@ -44,13 +44,13 @@ class SignupScreenState extends State<SignupScreen> {
   /////////////////////////////////////////////////////////////////////////////
 
   Widget lisztBanner() => new Container(
-    margin: const EdgeInsets.fromLTRB(45.0, 50.0, 0.0, 0.0),
+    margin: const EdgeInsets.fromLTRB(45.0, 30.0, 0.0, 0.0),
     child: new RichText(
       text: new TextSpan(
           text: "Liszt",
           style: new TextStyle(
             fontSize: 65.0,
-            color: blueGrey300,
+            color: primaryTextColor,
           )
       ),
     ),
@@ -64,7 +64,7 @@ class SignupScreenState extends State<SignupScreen> {
           style: new TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: 27.0,
-            color: blueGrey300,
+            color: primaryTextColor,
           )
       ),
     ),
@@ -154,12 +154,11 @@ class SignupScreenState extends State<SignupScreen> {
           text: "Sign up",
           style: new TextStyle(
             fontSize: 22.0,
-            color: white70,
+            color: loginSignupButtonTextColor,
           ),
         ),
       ),
-      color: cyan300,
-      textColor: white70,
+      color: loginSignupButtonColor,
     ),
   );
 
@@ -171,7 +170,7 @@ class SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: blueGrey900,
+        backgroundColor: appBarColor,
         title: new Text("sign up"),
       ),
       body: new Container(

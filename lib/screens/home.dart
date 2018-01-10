@@ -10,65 +10,68 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen>{
 
+  /////////////////////////////////////////////////////////////////////////////
+  // UI ASSETS
+  /////////////////////////////////////////////////////////////////////////////
+
   List<Widget> lisztTabs = const <Widget>[
     const Tab(text: "places", icon:  const Icon(Icons.account_balance)),
     const Tab(text: "tasks", icon: const Icon(Icons.build)),
   ];
 
-  Widget homeBanner() => new Container(
-    margin: const EdgeInsets.fromLTRB(60.0, 50.0, 0.0, 0.0),
-    child: new RichText(
-      text: new TextSpan(
-          text: "Upcoming Tasks",
-          style: new TextStyle(
-            fontSize: 25.0,
-            color: blueGrey300,
-          )
-      ),
-    ),
+  /////////////////////////////////////////////////////////////////////////////
+  // UI WIDGETS
+  /////////////////////////////////////////////////////////////////////////////
+
+  Widget homeDrawer() => new Drawer(
+    child: new Column(
+      children: <Widget>[
+        new UserAccountsDrawerHeader(
+          currentAccountPicture: new CircleAvatar(
+            child: new Text(
+              "SA",
+              style: new TextStyle(
+                fontSize: 30.0,
+              ),
+            ),
+            backgroundColor: white,
+          ),
+          accountName: new Text("test"),
+          accountEmail: new Text("test@mail.co"),
+          decoration: new BoxDecoration(
+            color: homeAppBarColor,
+          ),
+        ),
+        new Flexible(
+          child: new Column(
+
+          ),
+        )
+      ],
+    )
   );
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // UI BUILD
+  /////////////////////////////////////////////////////////////////////////////
   @override
   Widget build(BuildContext context) {
     return new DefaultTabController (
       length: 2,
       child: new Scaffold(
         appBar: new AppBar(
-          backgroundColor: blueGrey900,
+          backgroundColor: Colors.black,
           bottom: new TabBar(
             isScrollable: false,
             tabs: lisztTabs,
-            indicatorColor: pink100,
-            labelColor: cyan300,
-            unselectedLabelColor: pink100,
+            indicatorColor: Colors.white,
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white,
           ),
         ),
 
-        drawer: new Drawer(
-          child: new Column(
-            children: <Widget>[
-              new UserAccountsDrawerHeader(
-                currentAccountPicture: new CircleAvatar(
-                  child: new Text(
-                    "SA",
-                    style: new TextStyle(fontSize: 30.0,),
-                  ),
-                  backgroundColor: white70,
-                ),
-                accountName: new Text("test"),
-                accountEmail: new Text("test@mail.co"),
-                decoration: new BoxDecoration(
-                  color: Colors.black,
-                ),
-              ),
-              new Flexible(
-                child: new Column(
-
-                ),
-              )
-            ],
-          ),
-        ),
+        drawer: homeDrawer(),
         body: new Container(
           child: new Container(
             padding: const EdgeInsets.fromLTRB(20.0, 0.0, 50.0, 0.0),

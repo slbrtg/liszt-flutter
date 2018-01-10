@@ -39,7 +39,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           text: "Liszt",
           style: new TextStyle(
             fontSize: 65.0,
-            color: blueGrey300,
+            color: primaryTextColor,
           )
       ),
     ),
@@ -53,7 +53,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
           style: new TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: 27.0,
-            color: blueGrey300,
+            color: primaryTextColor,
           )
       ),
     ),
@@ -98,7 +98,7 @@ class WelcomeScreenState extends State<WelcomeScreen> {
               text: "sign up",
               style: new TextStyle(
                 fontSize: 22.0,
-                color: blueGrey300,
+                color: primaryTextColor,
               )
           ),
         ),

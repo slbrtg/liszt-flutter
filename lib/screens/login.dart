@@ -28,10 +28,10 @@ class LoginScreenState extends State<LoginScreen> {
     final form = formKey.currentState;
     if (form.validate()){
       form.save();
-      userAuth.loginUser(user).then((onValue) {
-        if (onValue == "user logged in")
-          debugPrint("user logged in!");
-        Navigator.pushNamed(context, "/home");
+      userAuth.logIn(user).then((onValue) {
+        if (onValue != null)
+          debugPrint(onValue.toString());
+          Navigator.pushNamed(context, "/home");
       }).catchError((PlatformException onError) {
         debugPrint(onError.message);
       });
@@ -50,7 +50,7 @@ class LoginScreenState extends State<LoginScreen> {
           text: "Liszt",
           style: new TextStyle(
             fontSize: 65.0,
-            color: blueGrey300,
+            color: primaryTextColor,
           )
       ),
     ),
@@ -64,7 +64,7 @@ class LoginScreenState extends State<LoginScreen> {
           style: new TextStyle(
             fontStyle: FontStyle.italic,
             fontSize: 27.0,
-            color: blueGrey300,
+            color: primaryTextColor,
           )
       ),
     ),
@@ -135,12 +135,11 @@ class LoginScreenState extends State<LoginScreen> {
           text: "Login",
           style: new TextStyle(
             fontSize: 22.0,
-            color: white70,
+            color: loginSignupButtonTextColor,
           ),
         ),
       ),
-      color: Colors.cyan[300],
-      textColor: white70,
+      color: loginSignupButtonColor,
     ),
   );
 
@@ -152,7 +151,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: blueGrey900,
+        backgroundColor: appBarColor,
         title: new Text("login"),
       ),
       body: new Container(
