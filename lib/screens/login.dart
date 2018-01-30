@@ -18,7 +18,7 @@ class LoginScreenState extends State<LoginScreen> {
   UserAuth userAuth = new UserAuth();
 
   final formKey = new GlobalKey<FormState>();
-  final TextEditingController _usernameTextController = new TextEditingController();
+  final TextEditingController _emailTextController = new TextEditingController();
   final TextEditingController _passwordTextController = new TextEditingController();
 
   /////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ class LoginScreenState extends State<LoginScreen> {
             child: new Icon(Icons.alternate_email),
           ),
         ),
-        controller: _usernameTextController,
+        controller: _emailTextController,
         validator: (String val) => val.contains(
             new RegExp("^[a-zA-Z0-9.!#\$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*\$"))
             ? null : "email is not valid",

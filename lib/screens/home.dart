@@ -8,16 +8,18 @@ class HomeScreen extends StatefulWidget {
   State createState() => new HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen>{
+class HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
 
   /////////////////////////////////////////////////////////////////////////////
   // UI ASSETS
   /////////////////////////////////////////////////////////////////////////////
 
-  List<Widget> lisztTabs = const <Widget>[
-    const Tab(text: "places", icon:  const Icon(Icons.account_balance)),
-    const Tab(text: "tasks", icon: const Icon(Icons.build)),
+  final List<Tab> lisztTabs = <Tab>[
+    const Tab(text: "Places", icon:  const Icon(Icons.account_balance)),
+    const Tab(text: "Tasks", icon: const Icon(Icons.build)),
   ];
+
+  TabController _tabController;
 
   /////////////////////////////////////////////////////////////////////////////
   // UI WIDGETS
@@ -42,47 +44,83 @@ class HomeScreenState extends State<HomeScreen>{
             color: homeAppBarColor,
           ),
         ),
-        new Flexible(
-          child: new Column(
-
+        new Container (
+          margin: const EdgeInsets.only(left: 10.0),
+          child: new ListTile(
+            leading: const Icon(Icons.event_seat),
+            title: const Text('Add a place'),
           ),
         )
       ],
     )
   );
 
+  Widget createFlatButton(String tabText) {
+    String _buttonText;
+    tabText == "Places" ? _buttonText = "Add a Place" : _buttonText = "Add a Task";
+    return new Container(
+      margin: const EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 0.0),
+      width: 250.0,
+      height: 40.0,
+      child: new FlatButton(
+        onPressed: () {
+          debugPrint(_buttonText + " pressed");
+          tabText == "Places" ? Navigator.pushNamed(context, "/addPlace")
+              : debugPrint("add task coming soon");
+        },
+      child: new RichText(
+        text: new TextSpan(
+          text: _buttonText,
+          style: new TextStyle(
+          fontSize: 22.0,
+          color: white70,
+          ),
+        ),
+      ),
+      color: Colors.cyan[300],
+      textColor: white70,
+      ),
+    );
+  }
 
   /////////////////////////////////////////////////////////////////////////////
   // UI BUILD
   /////////////////////////////////////////////////////////////////////////////
   @override
-  Widget build(BuildContext context) {
-    return new DefaultTabController (
-      length: 2,
-      child: new Scaffold(
-        appBar: new AppBar(
-          backgroundColor: Colors.black,
-          bottom: new TabBar(
-            isScrollable: false,
-            tabs: lisztTabs,
-            indicatorColor: Colors.white,
-            labelColor: Colors.white,
-            unselectedLabelColor: Colors.white,
-          ),
-        ),
+  void initState() {
+    super.initState();
+    _tabController = new TabController(length: lisztTabs.length, vsync: this);
+  }
 
-        drawer: homeDrawer(),
-        body: new Container(
-          child: new Container(
-            padding: const EdgeInsets.fromLTRB(20.0, 0.0, 50.0, 0.0),
-            child: new Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-              ]
-            ),
-          ),
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+      appBar: new AppBar(
+        backgroundColor: appBarColor,
+        bottom: new TabBar(
+          controller: _tabController,
+          isScrollable: false,
+          tabs: lisztTabs,
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white,
         ),
+      ),
+      drawer: homeDrawer(),
+      body: new TabBarView(
+        controller: _tabController,
+        children: lisztTabs.map((Tab tab) {
+          return new Column (
+            children: <Widget>[
+              createFlatButton(tab.text),
+            ],
+          );
+        }).toList(),
       ),
     );
   }
